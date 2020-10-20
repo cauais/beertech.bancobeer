@@ -6,6 +6,7 @@ import com.beertech.banco.domain.Conta;
 
 public class ContaDto {
 
+	private String id;
 	private String hash;
 	private BigDecimal saldo;
 	private String nome;
@@ -21,6 +22,7 @@ public class ContaDto {
 	}
 	
 	public ContaDto(Conta conta) {
+		this.id = conta.getId();
 		this.hash = conta.getHash();
 		this.saldo = conta.getSaldo();
 		this.nome = conta.getNome();
@@ -43,5 +45,15 @@ public class ContaDto {
 	public String getCnpj() {
 		return cnpj;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	
 }
 

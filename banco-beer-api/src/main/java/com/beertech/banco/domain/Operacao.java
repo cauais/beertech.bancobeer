@@ -3,20 +3,12 @@ package com.beertech.banco.domain;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 
 public class Operacao {	
 
-	private String id;
 	private LocalDateTime dataHora;
 	private BigDecimal valor;
 	@Enumerated(EnumType.STRING)
@@ -31,8 +23,7 @@ public class Operacao {
 		this.tipo = tipo;
 	}
 
-	public Operacao(String id, LocalDateTime dataHora, BigDecimal valor, TipoOperacao tipo) {
-		this.id = id;
+	public Operacao(LocalDateTime dataHora, BigDecimal valor, TipoOperacao tipo) {
 		this.dataHora = dataHora;
 		this.valor = valor;
 		this.tipo = tipo;

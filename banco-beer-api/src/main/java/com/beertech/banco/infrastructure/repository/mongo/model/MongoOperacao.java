@@ -10,11 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.beertech.banco.domain.Operacao;
 import com.beertech.banco.domain.TipoOperacao;
 
-@Document("operacoes")
 public class MongoOperacao {
-
-	@Id
-	private String id;
 
 	private LocalDateTime dataHora;
 	private BigDecimal valor;
@@ -27,10 +23,6 @@ public class MongoOperacao {
 		this.valor = valor;
 		this.tipo = tipo;
 		this.dataHora = dataHora;
-	}
-
-	public String getId() {
-		return id;
 	}
 
 	public LocalDateTime getDataHora() {
@@ -50,7 +42,7 @@ public class MongoOperacao {
 	}
 	
 	public Operacao toDomain(MongoOperacao mongoOperacao) {
-		return new Operacao(mongoOperacao.getId(), mongoOperacao.getDataHora(), mongoOperacao.getValor(), mongoOperacao.getTipo());
+		return new Operacao(mongoOperacao.getDataHora(), mongoOperacao.getValor(), mongoOperacao.getTipo());
 	}
 
 }

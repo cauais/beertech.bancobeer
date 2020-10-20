@@ -17,11 +17,12 @@ import com.beertech.banco.domain.Conta;
 @Document("contas")
 public class MongoConta  implements UserDetails {
 
+	private static final long serialVersionUID = -7566034954572301636L;
+
 	@Id
 	private String id;
 	private String hash;	
 	private BigDecimal saldo;
-	@DBRef
 	private List<MongoOperacao> operacoes;
 	private String nome;
 	private String email;
@@ -94,7 +95,7 @@ public class MongoConta  implements UserDetails {
 	}
 
 	public MongoConta fromDomain(Conta conta) {
-		if(conta.getId() != null)
+		if(conta.getId() == null)
 			return new MongoConta(conta.getHash()
 					, conta.getSaldo()
 					, conta.getOperacoes().stream().map(new MongoOperacao()::fromDomain).collect(Collectors.toList())
@@ -118,6 +119,7 @@ public class MongoConta  implements UserDetails {
 	public Conta toDomain(MongoConta mongoConta) {
 		return new Conta( 
 				mongoConta.getId()
+				, mongoConta.getHash()
 				, mongoConta.getSaldo()
 				, mongoConta.getNome()
 				, mongoConta.getEmail()

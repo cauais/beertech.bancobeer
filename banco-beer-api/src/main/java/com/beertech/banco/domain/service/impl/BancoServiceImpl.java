@@ -9,14 +9,18 @@ import com.beertech.banco.domain.Operacao;
 import com.beertech.banco.domain.TipoOperacao;
 import com.beertech.banco.domain.exception.ContaException;
 import com.beertech.banco.domain.repository.ContaRepository;
+import com.beertech.banco.domain.repository.OperacaoRepository;
 import com.beertech.banco.domain.service.BancoService;
 
 public class BancoServiceImpl implements BancoService {
 
 	private final ContaRepository contaRepository;
+	
+	private final OperacaoRepository operacaoRepository;
 		
-	public BancoServiceImpl(ContaRepository contaRepository) {
+	public BancoServiceImpl(ContaRepository contaRepository,OperacaoRepository operacaoRepository ) {
 		this.contaRepository = contaRepository;
+		this.operacaoRepository = operacaoRepository;
 	}
 
 	@Override
@@ -50,8 +54,8 @@ public class BancoServiceImpl implements BancoService {
 			conta.saque(operacao.getValor());
 		else 
 			throw new IllegalArgumentException("Operação não existente!");
-		
-		conta.addOperacao(operacao);
+
+		conta.addOperacao(operacaoRepository.save(operacao));
 		contaRepository.save(conta);
 		
 		return conta;

@@ -46,10 +46,10 @@ public class ContaController {
 
     @PostMapping(value = "/saque")
 	public ResponseEntity saque(@Valid @RequestBody OperacaoDto operacaoDto, Principal principal) {
-		Operacao operacaoNaoRealizada = new Operacao(operacaoDto.getValor(), TipoOperacao.SAQUE);
 		try {
-			System.out.println(principal.getName());
-			//Conta conta = bancoService.realizaOperacao(operacaoDto.getHash(), operacaoNaoRealizada);
+			Conta contaPeloEmail = bancoService.contaPeloEmail(principal.getName());
+			Operacao operacaoNaoRealizada = new Operacao(operacaoDto.getValor(), TipoOperacao.SAQUE);
+			Conta conta = bancoService.realizaOperacao(contaPeloEmail.getHash(), operacaoNaoRealizada);
 			return ResponseEntity.ok().build();
 		} catch (ContaException | IllegalArgumentException ex) {
 			return ResponseEntity.badRequest().body(ex.getMessage());
@@ -58,20 +58,22 @@ public class ContaController {
 
 	@PostMapping(value = "/deposito")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity deposito(@Valid @RequestBody OperacaoDto operacaoDto) {
-		Operacao operacaoNaoRealizada = new Operacao(operacaoDto.getValor(), TipoOperacao.DEPOSITO);
+	public ResponseEntity deposito(@Valid @RequestBody OperacaoDto operacaoDto, Principal principal) {
 		try {
-			//Conta conta = bancoService.realizaOperacao(operacaoDto.getHash(), operacaoNaoRealizada);
+			Conta contaPeloEmail = bancoService.contaPeloEmail(principal.getName());
+			Operacao operacaoNaoRealizada = new Operacao(operacaoDto.getValor(), TipoOperacao.DEPOSITO);
+			Conta conta = bancoService.realizaOperacao(contaPeloEmail.getHash(), operacaoNaoRealizada);
 			return ResponseEntity.ok().build();
 		} catch (ContaException | IllegalArgumentException ex) {
 			return ResponseEntity.badRequest().body(ex.getMessage());
 		}
 	}
 
-    @GetMapping(value = "/saldo/{hash}")
-    public ResponseEntity getDataSaldo(@PathVariable String hash) throws JSONException {
+    @GetMapping(value = "/saldo/")
+    public ResponseEntity getDataSaldo(Principal principal) throws JSONException {
     	try {
-    		BigDecimal saldo = bancoService.saldo(hash);
+    		Conta contaPeloEmail = bancoService.contaPeloEmail(principal.getName());
+    		BigDecimal saldo = bancoService.saldo(contaPeloEmail.getHash());
     		return ResponseEntity.ok(saldo);    		
     	} catch(ContaException ex) {
     		ex.printStackTrace();
@@ -83,7 +85,7 @@ public class ContaController {
     public ResponseEntity criaContaCorrente(@Valid ContaForm contaDto, UriComponentsBuilder uriBuilder) {
     	try {
     		
-    		Profile profile = profileService.getByName(contaDto.getProfile());
+    		Profile profile = profileService.getByName("ROLE_USER");
     		if(profile == null)
     			return ResponseEntity.badRequest().body("Profile invalido");
     		Conta conta = new Conta(contaDto, profile);
@@ -96,9 +98,10 @@ public class ContaController {
     }
     
     @PostMapping("/transferencia")
-    public ResponseEntity transferencia(@Valid @RequestBody TransferenciaDto transferenciaDto) {
+    public ResponseEntity transferencia(@Valid @RequestBody TransferenciaDto transferenciaDto, Principal principal) {
     	try {
-    		//bancoService.transferencia(transferenciaDto.getContaOrigem(), transferenciaDto.getContaDestino(), transferenciaDto.getValor());
+    		Conta contaPeloEmail = bancoService.contaPeloEmail(principal.getName());
+    		bancoService.transferencia(contaPeloEmail.getHash(), transferenciaDto.getContaDestino(), transferenciaDto.getValor());
     		return ResponseEntity.ok().build();    		
     	} catch (ContaException | IllegalArgumentException ex) {
     		return ResponseEntity.badRequest().body(ex.getMessage());

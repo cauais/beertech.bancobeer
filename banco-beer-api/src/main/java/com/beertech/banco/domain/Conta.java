@@ -37,10 +37,11 @@ public class Conta {
 		this.hash = getHashMd5(email + cnpj);
 	}
 
-	public Conta(String id, BigDecimal saldo, String nome, String email, String cnpj,
+	public Conta(String id, String hash, BigDecimal saldo, String nome, String email, String cnpj,
 				 String senha, List<Profile> profiles) {
 
 		this.id = id;
+		this.hash = hash;
 		this.saldo = saldo;
 		this.nome = nome;
 		this.email = email;
@@ -52,6 +53,7 @@ public class Conta {
 	public Conta(@Valid ContaForm contaDto, Profile profile) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
+		this.operacoes = new ArrayList<Operacao>();
 		this.nome = contaDto.getNome();
 		this.email = contaDto.getEmail();
 		this.cnpj = contaDto.getCnpj();
@@ -113,6 +115,8 @@ public class Conta {
 	}
 
 	public void addOperacao(Operacao operacao) {
+		if(this.operacoes == null)
+			this.operacoes = new ArrayList<Operacao>();
 		this.operacoes.add(operacao);
 	}
 

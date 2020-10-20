@@ -30,9 +30,15 @@ public class BancoApplication {
 
 		return args -> {
 
-			Profile adminProfile = roleRepository.findByName("ADMIN");
+			Profile adminProfile = roleRepository.findByName("ROLE_ADMIN");
 			if (adminProfile == null) {
-				Profile newAdminRole = new Profile("ADMIN");
+				Profile newAdminRole = new Profile("ROLE_ADMIN");
+				adminProfile = roleRepository.save(newAdminRole);
+			}
+			
+			Profile userProfile = roleRepository.findByName("ROLE_USER");
+			if (userProfile == null) {
+				Profile newAdminRole = new Profile("ROLE_USER");
 				adminProfile = roleRepository.save(newAdminRole);
 			}
 			

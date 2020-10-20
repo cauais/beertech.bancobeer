@@ -9,6 +9,7 @@ import com.beertech.banco.domain.service.ProfileService;
 import com.beertech.banco.domain.service.impl.BancoServiceImpl;
 import com.beertech.banco.domain.service.impl.ProfileServiceImpl;
 import com.beertech.banco.infrastructure.repository.mongo.repository.impl.MongoContaRepositoryImpl;
+import com.beertech.banco.infrastructure.repository.mongo.repository.impl.MongoOperacaoRepositoryImpl;
 import com.beertech.banco.infrastructure.repository.mongo.repository.impl.MongoProfileRepositoryImpl;
 
 @Configuration
@@ -18,10 +19,12 @@ public class BeanConfiguration {
 	private MongoProfileRepositoryImpl mongoProfileRepositoryImpl;
 	@Autowired
 	private MongoContaRepositoryImpl mongoContaRepositoryImpl;
+	@Autowired
+	private MongoOperacaoRepositoryImpl mongoOperacaoRepositoryImpl;
 	
 	@Bean
     public BancoService bancoService() {
-        return new BancoServiceImpl(mongoContaRepositoryImpl);
+        return new BancoServiceImpl(mongoContaRepositoryImpl, mongoOperacaoRepositoryImpl);
     }
 	
 	@Bean
