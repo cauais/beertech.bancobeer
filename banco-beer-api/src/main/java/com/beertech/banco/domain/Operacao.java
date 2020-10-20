@@ -9,10 +9,13 @@ import javax.persistence.Enumerated;
 
 public class Operacao {	
 
+	private String id;
 	private LocalDateTime dataHora;
 	private BigDecimal valor;
 	@Enumerated(EnumType.STRING)
 	private TipoOperacao tipo;
+	
+	private Conta conta;
 
 	public Operacao() {
 	}
@@ -23,13 +26,26 @@ public class Operacao {
 		this.tipo = tipo;
 	}
 
-	public Operacao(LocalDateTime dataHora, BigDecimal valor, TipoOperacao tipo) {
+	public Operacao(String id, LocalDateTime dataHora, BigDecimal valor, TipoOperacao tipo, Conta conta) {
+		this.id = id;
 		this.dataHora = dataHora;
 		this.valor = valor;
 		this.tipo = tipo;
+		this.conta = conta;
 	}
 
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
 	
+	public String getId() {
+		return id;
+	}
+
+	public Conta getConta() {
+		return conta;
+	}
+
 	public LocalDateTime getDataHora() {
 		return dataHora;
 	}

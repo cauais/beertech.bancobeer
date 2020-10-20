@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.beertech.banco.domain.exception.ContaException;
 import com.beertech.banco.domain.service.BancoService;
-import com.beertech.banco.infrastructure.rest.controller.dto.OperacaoDto;
+import com.beertech.banco.infrastructure.rest.controller.form.OperacaoForm;
 
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -26,7 +26,7 @@ public class OperacaoController {
 
 	@ApiIgnore
     @PostMapping(value = "/operacao")
-    public ResponseEntity salvaOperacao(@Valid @RequestBody OperacaoDto operacaoDto) {
+    public ResponseEntity salvaOperacao(@Valid @RequestBody OperacaoForm operacaoDto) {
     	//Operacao operacaoNaoRealizada = new Operacao(operacaoDto.getValor(), operacaoDto.getTipo());
     	try {
     		//Conta conta = bancoService.realizaOperacao(operacaoDto.getHash(), operacaoNaoRealizada);

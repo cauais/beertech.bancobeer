@@ -20,7 +20,6 @@ public class Conta {
 
 	private String id;
 	private String hash;
-	private List<Operacao> operacoes;
 	private BigDecimal saldo;
 	private String nome;
 	private String email;
@@ -31,8 +30,6 @@ public class Conta {
 
 
 	public Conta() {
-
-		this.operacoes = new ArrayList<Operacao>();
 		saldo = new BigDecimal(0.00);
 		this.hash = getHashMd5(email + cnpj);
 	}
@@ -53,12 +50,10 @@ public class Conta {
 	public Conta(@Valid ContaForm contaDto, Profile profile) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
-		this.operacoes = new ArrayList<Operacao>();
 		this.nome = contaDto.getNome();
 		this.email = contaDto.getEmail();
 		this.cnpj = contaDto.getCnpj();
 		this.senha = encoder.encode(contaDto.getSenha());
-		this.operacoes = new ArrayList<Operacao>();
 		this.saldo = new BigDecimal(0.00);
 		this.hash = getHashMd5(email + cnpj);
 		this.profiles = new ArrayList<Profile>();
@@ -79,10 +74,6 @@ public class Conta {
 
 	public String getHash() {
 		return hash;
-	}
-
-	public List<Operacao> getOperacoes() {
-		return Collections.unmodifiableList(operacoes);
 	}
 
 	public BigDecimal getSaldo() {
@@ -112,12 +103,6 @@ public class Conta {
 		}
 		BigInteger hash = new BigInteger(1, md.digest(value.getBytes()));
 		return hash.toString(16);
-	}
-
-	public void addOperacao(Operacao operacao) {
-		if(this.operacoes == null)
-			this.operacoes = new ArrayList<Operacao>();
-		this.operacoes.add(operacao);
 	}
 
 	public String getNome() {

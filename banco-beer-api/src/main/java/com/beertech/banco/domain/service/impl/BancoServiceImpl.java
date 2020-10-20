@@ -15,10 +15,9 @@ import com.beertech.banco.domain.service.BancoService;
 public class BancoServiceImpl implements BancoService {
 
 	private final ContaRepository contaRepository;
-	
+
 	private final OperacaoRepository operacaoRepository;
-		
-	public BancoServiceImpl(ContaRepository contaRepository,OperacaoRepository operacaoRepository ) {
+	public BancoServiceImpl(ContaRepository contaRepository, OperacaoRepository operacaoRepository) {
 		this.contaRepository = contaRepository;
 		this.operacaoRepository = operacaoRepository;
 	}
@@ -40,28 +39,7 @@ public class BancoServiceImpl implements BancoService {
 		}
 		return conta.get().getSaldo();
 	}
-
-	@Override
-	public Conta realizaOperacao(String contaHash, Operacao operacao) {
-		Optional<Conta> contaByHash = contaRepository.findByHash(contaHash);
-		if(!contaByHash.isPresent()) {
-			throw new ContaException("O hash da conta não existe!");
-		}
-		Conta conta = contaByHash.get();
-		if(operacao.getTipo().equals(TipoOperacao.DEPOSITO))
-			conta.deposito(operacao.getValor());
-		else if(operacao.getTipo().equals(TipoOperacao.SAQUE))
-			conta.saque(operacao.getValor());
-		else 
-			throw new IllegalArgumentException("Operação não existente!");
-
-		conta.addOperacao(operacaoRepository.save(operacao));
-		contaRepository.save(conta);
-		
-		return conta;
-		
-	}
-
+	
 	@Override
 	public void atualizaConta(Conta conta) {
 		contaRepository.save(conta);		
@@ -112,16 +90,6 @@ public class BancoServiceImpl implements BancoService {
 	}
 
 	@Override
-	public List<Operacao> extrato(String hash) {
-		Optional<Conta> conta = contaRepository.findByHash(hash);
-		if(!conta.isPresent()) {
-			throw new ContaException("O id da conta não existe!");
-		}
-		
-		return conta.get().getOperacoes();
-	}
-
-	@Override
 	public Conta contaPeloEmail(String email) {
 		Optional<Conta> conta = contaRepository.findByEmail(email);
 		if(!conta.isPresent()) {
@@ -129,5 +97,27 @@ public class BancoServiceImpl implements BancoService {
 		}		
 		return conta.get();
 	}
+
+	@Override
+	public BigDecimal realizaOperacao(String hash, Operacao operacao) {
+		
+		Optional<Conta> conta = contaRepository.findByHash(hash);
+		if(!conta.isPresent()) {
+			throw new ContaException("O hash da conta não existe!");
+		}
+		
+		if(operacao.getTipo().equals(TipoOperacao.DEPOSITO))
+			conta.get().deposito(operacao.getValor());
+		else if(operacao.getTipo().equals(TipoOperacao.SAQUE))
+			conta.get().saque(operacao.getValor());
+		else 
+			throw new IllegalArgumentException("Operação não existente!");
+
+		operacao.setConta(conta.get());
+		operacaoRepository.save(operacao);		
+		contaRepository.save(conta.get());
+		return conta.get().getSaldo();
+	}
+
 
 }

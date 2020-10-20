@@ -23,7 +23,6 @@ public class MongoConta  implements UserDetails {
 	private String id;
 	private String hash;	
 	private BigDecimal saldo;
-	private List<MongoOperacao> operacoes;
 	private String nome;
 	private String email;
 	private String cnpj;
@@ -34,7 +33,7 @@ public class MongoConta  implements UserDetails {
 	public MongoConta() {
 	}
 	
-	public MongoConta(String id, String hash, BigDecimal saldo, List<MongoOperacao> operacoes, String nome, String email, String cnpj,
+	public MongoConta(String id, String hash, BigDecimal saldo, String nome, String email, String cnpj,
 					  String senha, List<MongoProfile> perfil) {
 		this.id = id;
 		this.hash = hash;
@@ -46,10 +45,9 @@ public class MongoConta  implements UserDetails {
 		this.profiles = perfil;
 	}
 	
-	public MongoConta(String hash, BigDecimal saldo, List<MongoOperacao> operacoes, String nome, String email, String cnpj,
+	public MongoConta(String hash, BigDecimal saldo, String nome, String email, String cnpj,
 					  String senha, List<MongoProfile> perfil) {
 		this.hash = hash;
-		this.operacoes = operacoes;
 		this.saldo = saldo;
 		this.nome = nome;
 		this.email = email;
@@ -68,10 +66,6 @@ public class MongoConta  implements UserDetails {
 
 	public BigDecimal getSaldo() {
 		return saldo;
-	}
-
-	public List<MongoOperacao> getOperacoes() {
-		return operacoes;
 	}
 
 	public String getNome() {
@@ -98,7 +92,6 @@ public class MongoConta  implements UserDetails {
 		if(conta.getId() == null)
 			return new MongoConta(conta.getHash()
 					, conta.getSaldo()
-					, conta.getOperacoes().stream().map(new MongoOperacao()::fromDomain).collect(Collectors.toList())
 					, conta.getNome()
 					, conta.getEmail()
 					, conta.getCnpj()
@@ -108,7 +101,6 @@ public class MongoConta  implements UserDetails {
 			return new MongoConta(conta.getId()
 					,conta.getHash()
 					, conta.getSaldo()
-					, conta.getOperacoes().stream().map(new MongoOperacao()::fromDomain).collect(Collectors.toList())
 					, conta.getNome()
 					, conta.getEmail()
 					, conta.getCnpj()

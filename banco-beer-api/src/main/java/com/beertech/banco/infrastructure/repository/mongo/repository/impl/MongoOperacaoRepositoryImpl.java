@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.beertech.banco.domain.Conta;
 import com.beertech.banco.domain.Operacao;
 import com.beertech.banco.domain.repository.OperacaoRepository;
 import com.beertech.banco.infrastructure.repository.mongo.model.MongoConta;
@@ -30,6 +31,12 @@ public class MongoOperacaoRepositoryImpl implements OperacaoRepository  {
 	@Override
 	public Operacao save(Operacao operacao) {
 		return new MongoOperacao().toDomain((operacaoRepository.save(new MongoOperacao().fromDomain(operacao))));
+	}
+
+	@Override
+	public List<Operacao> getByConta(Conta conta) {
+		List<MongoOperacao> findByConta = operacaoRepository.findByConta(new MongoConta().fromDomain(conta));
+		return findByConta.stream().map(new MongoOperacao()::toDomain).collect(Collectors.toList());
 	}
 	
 	
