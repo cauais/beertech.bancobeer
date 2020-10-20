@@ -2,14 +2,19 @@ package com.beertech.banco.domain;
 
 public class Profile {
 
-	private Long id;
+	private String id;
 	private String name;
-	public Profile(Long id, String name) {
+	public Profile(String id, String name) {
 		this.id = id;
 		this.name = name;
 	}
-	
-	public Long getId() {
+			
+	public Profile(String name) {
+		super();
+		this.name = name;
+	}
+
+	public String getId() {
 		return id;
 	}
 	public String getName() {

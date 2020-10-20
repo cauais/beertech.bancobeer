@@ -8,12 +8,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.validation.Valid;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import com.beertech.banco.domain.exception.ContaException;
+import com.beertech.banco.infrastructure.rest.controller.form.ContaForm;
 
 
 public class Conta {
 
-	private Long id;
+	private String id;
 	private String hash;
 	private List<Operacao> operacoes;
 	private BigDecimal saldo;
@@ -32,16 +37,10 @@ public class Conta {
 		this.hash = getHashMd5(email + cnpj);
 	}
 
-	public Conta(String hash) {
-		this.hash = hash;
-		this.operacoes = new ArrayList<Operacao>();
-		saldo = new BigDecimal(0.00);
-	}
-
-	public Conta(BigDecimal saldo, String nome, String email, String cnpj,
+	public Conta(String id, BigDecimal saldo, String nome, String email, String cnpj,
 				 String senha, List<Profile> profiles) {
 
-
+		this.id = id;
 		this.saldo = saldo;
 		this.nome = nome;
 		this.email = email;
@@ -49,16 +48,30 @@ public class Conta {
 		this.senha = senha;
 		this.profiles = profiles;
 	}
-	
+
+	public Conta(@Valid ContaForm contaDto, Profile profile) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		this.nome = contaDto.getNome();
+		this.email = contaDto.getEmail();
+		this.cnpj = contaDto.getCnpj();
+		this.senha = encoder.encode(contaDto.getSenha());
+		this.operacoes = new ArrayList<Operacao>();
+		this.saldo = new BigDecimal(0.00);
+		this.hash = getHashMd5(email + cnpj);
+		this.profiles = new ArrayList<Profile>();
+		this.profiles.add(profile);		
+	}
+
 	public List<Profile> getProfiles() {
 		return profiles;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -142,4 +155,10 @@ public class Conta {
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
 	}
+
+	public void setProfiles(List<Profile> profiles) {
+		this.profiles = profiles;
+	}
+	
+	
 }

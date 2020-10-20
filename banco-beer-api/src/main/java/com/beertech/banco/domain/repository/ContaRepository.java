@@ -9,6 +9,6 @@ public interface ContaRepository {
 	Optional<Conta> findByHash(String hash);
 	Conta save(Conta conta);
 	Optional<Conta> findByEmail(String email);
-	Optional<Conta> findById(Long id);
+	Optional<Conta> findById(String id);
 	List<Conta> findAll();	
 }

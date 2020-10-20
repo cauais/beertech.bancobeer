@@ -12,8 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.beertech.banco.infrastructure.repository.mysql.ContaRepository;
-import com.beertech.banco.infrastructure.repository.mysql.model.MySqlConta;
+import com.beertech.banco.infrastructure.repository.mongo.ContaRepository;
+import com.beertech.banco.infrastructure.repository.mongo.model.MongoConta;
 
 
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
@@ -42,8 +42,8 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 	}
 
 	private void autenticarCliente(String token) {
-		Long contaId = tokenService.getIdConta(token);
-		Optional<MySqlConta> conta = repository.findById(contaId);
+		String contaId = tokenService.getIdConta(token);
+		Optional<MongoConta> conta = repository.findById(contaId);
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(conta.get(), null, conta.get().getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);		
 	}

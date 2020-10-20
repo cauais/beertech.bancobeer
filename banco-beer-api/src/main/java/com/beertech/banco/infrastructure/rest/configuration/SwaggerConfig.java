@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.beertech.banco.infrastructure.repository.mysql.model.MySqlConta;
+import com.beertech.banco.infrastructure.repository.mongo.model.MongoConta;
 
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -26,7 +26,7 @@ public class SwaggerConfig {
           .apis(RequestHandlerSelectors.basePackage("com.beertech.banco.infrastructure"))
           .paths(PathSelectors.any())
           .build()
-          .ignoredParameterTypes(MySqlConta.class)
+          .ignoredParameterTypes(MongoConta.class)
           .globalOperationParameters(
                   Arrays.asList(
                           new ParameterBuilder()

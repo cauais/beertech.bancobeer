@@ -11,6 +11,8 @@ public class ContaForm {
 	private String cnpj;
 	@NotBlank
 	private String senha;
+	@NotBlank
+	private String profile;
 	
 	public String getNome() {
 		return nome;
@@ -30,10 +32,18 @@ public class ContaForm {
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
 	public String getSenha() {
 		return senha;
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}	
+	}
+	public String getProfile() {
+		return profile;
+	}
+	
+	
 }

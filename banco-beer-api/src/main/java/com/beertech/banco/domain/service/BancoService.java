@@ -13,7 +13,7 @@ public interface BancoService {
 	void atualizaConta(Conta conta);
 	void transferencia(String hahsDaContaOrigem, String hahsDaContaDestino, BigDecimal valor);
 	List<Conta> listaTodasAsContas();
-	Conta contaPeloId(Long id);
+	Conta contaPeloId(String id);
 	Conta contaPeloHash(String hash);
 	List<Operacao> extrato(String hash);
 	Conta contaPeloEmail(String email);

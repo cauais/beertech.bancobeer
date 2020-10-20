@@ -90,7 +90,7 @@ public class BancoServiceImpl implements BancoService {
 	}
 
 	@Override
-	public Conta contaPeloId(Long id) {
+	public Conta contaPeloId(String id) {
 		Optional<Conta> findById = contaRepository.findById(id);
 		if(!findById.isPresent()) {
 			throw new ContaException("O id da conta não existe!");

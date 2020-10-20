@@ -5,17 +5,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.beertech.banco.domain.service.BancoService;
+import com.beertech.banco.domain.service.ProfileService;
 import com.beertech.banco.domain.service.impl.BancoServiceImpl;
-import com.beertech.banco.infrastructure.repository.mysql.repository.impl.MySqlContaRepositoryImpl;
+import com.beertech.banco.domain.service.impl.ProfileServiceImpl;
+import com.beertech.banco.infrastructure.repository.mongo.repository.impl.MongoContaRepositoryImpl;
+import com.beertech.banco.infrastructure.repository.mongo.repository.impl.MongoProfileRepositoryImpl;
 
 @Configuration
 public class BeanConfiguration {
 
 	@Autowired
-	private MySqlContaRepositoryImpl mySqlContaRepositoryImpl;
+	private MongoProfileRepositoryImpl mongoProfileRepositoryImpl;
+	@Autowired
+	private MongoContaRepositoryImpl mongoContaRepositoryImpl;
 	
 	@Bean
     public BancoService bancoService() {
-        return new BancoServiceImpl(mySqlContaRepositoryImpl);
+        return new BancoServiceImpl(mongoContaRepositoryImpl);
+    }
+	
+	@Bean
+    public ProfileService profileService() {
+        return new ProfileServiceImpl(mongoProfileRepositoryImpl);
     }
 }

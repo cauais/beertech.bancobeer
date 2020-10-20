@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.beertech.banco.domain.Conta;
-import com.beertech.banco.infrastructure.repository.mysql.model.MySqlConta;
+import com.beertech.banco.infrastructure.repository.mongo.model.MongoConta;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -24,7 +23,7 @@ public class TokenService {
 	
 
 	public String createTokan(Authentication authentication) {
-		MySqlConta logado = (MySqlConta) authentication.getPrincipal();
+		MongoConta logado = (MongoConta) authentication.getPrincipal();
 		Date today = new Date();
 		Date expirationDate = new Date(today.getTime() + Long.parseLong(expiration));
 		
@@ -48,8 +47,8 @@ public class TokenService {
 	}
 
 
-	public Long getIdConta(String token) {
+	public String getIdConta(String token) {
 		Claims body = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
-		return Long.parseLong(body.getSubject());
+		return body.getSubject();
 	}
 }

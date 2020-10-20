@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 
 public class Operacao {	
 
+	private String id;
 	private LocalDateTime dataHora;
 	private BigDecimal valor;
 	@Enumerated(EnumType.STRING)
@@ -30,7 +31,8 @@ public class Operacao {
 		this.tipo = tipo;
 	}
 
-	public Operacao(LocalDateTime dataHora, BigDecimal valor, TipoOperacao tipo) {
+	public Operacao(String id, LocalDateTime dataHora, BigDecimal valor, TipoOperacao tipo) {
+		this.id = id;
 		this.dataHora = dataHora;
 		this.valor = valor;
 		this.tipo = tipo;
