@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beertech-banco
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  beertech-banco
+  template:
+    metadata:
+      name: beertech-banco
+      labels:
+        app: beertech-banco
+    spec:
+      containers:
+      - name: beertech-banco      
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: postgres_user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: postgres_password
+          - name: POSTGRES_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: hostname-config
+                key: postgres_host
+        image: beertech-banco:latest
+        imagePullPolicy: Never
